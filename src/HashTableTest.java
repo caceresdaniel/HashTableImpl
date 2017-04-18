@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -11,13 +13,17 @@ public class HashTableTest {
 	public void generateSimpleList() {
 
 		try {
+			Instant start = Instant.now();
 			grabFromFileForSimple();
+			Instant end = Instant.now();
+			
+			System.out.println(simpleList.toString());
+			System.out.println(Duration.between(start, end));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println(simpleList.toString());
-
+		
 	}
 
 	public void generateHashTable() {
@@ -25,7 +31,6 @@ public class HashTableTest {
 	}
 
 	public void grabFromFileForSimple() throws IOException {
-		String[] field;
 
 		JFileChooser fc = new JFileChooser();
 		int val = fc.showOpenDialog(null);
@@ -34,22 +39,20 @@ public class HashTableTest {
 			File file = fc.getSelectedFile();
 			Scanner fReader = new Scanner(file);
 
-			while (fReader.hasNextLine()) {
-				String lineOfData;
+			while (fReader.hasNext()) {
+				String	word = fReader.next().toLowerCase();
 
-				lineOfData = fReader.nextLine();
+				int indexForWord = simpleList.find(word);
 				
-				field = lineOfData.split(" ");
-
-				for (int i = 0; i < field.length; i++) {
-					if (field[i].contains(" ")) {
-					} else {
-						simpleList.add(new Entry(field[i].toLowerCase()));
-					}
+				if (indexForWord == -1) {
+					simpleList.add(new Entry(word));
+				} else {
+					simpleList.getEntry(indexForWord).incrementCount();
 				}
 
 			}
 			fReader.close();
+			
 		}
 	}
 
