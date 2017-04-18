@@ -16,7 +16,7 @@ public class HashTableTest {
 
 		try {
 			Instant start = Instant.now();
-			grabFromFileForSimple();
+			grabFromFileForSimpleList();
 			Instant end = Instant.now();
 			fileWriterForSimpleList();
 			System.out.println(simpleList.toString());
@@ -32,7 +32,7 @@ public class HashTableTest {
 
 	}
 
-	public void grabFromFileForSimple() throws IOException {
+	public void grabFromFileForSimpleList() throws IOException {
 
 		JFileChooser fc = new JFileChooser();
 		int val = fc.showOpenDialog(null);
