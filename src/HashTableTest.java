@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 public class HashTableTest {
 	SimpleList simpleList = new SimpleList();
+	HashTable hashTable = new HashTable();
 
 	public void generateSimpleList() {
 
@@ -27,7 +28,7 @@ public class HashTableTest {
 			
 			System.out.println("hash code for index 5: " + simpleList.getEntry(5).toString());
 			System.out.println(simpleList.getEntry(5).hashCode());
-			
+			System.out.println();
 
 		} catch (IOException e) {
 			e.printStackTrace();
