@@ -21,6 +21,13 @@ public class HashTableTest {
 			fileWriterForSimpleList();
 			System.out.println(simpleList.toString());
 			System.out.println(Duration.between(start, end));
+			
+			System.out.println("hash code for index 2: " + simpleList.getEntry(2).toString());
+			System.out.println(simpleList.getEntry(2).hashCode());
+			
+			System.out.println("hash code for index 5: " + simpleList.getEntry(5).toString());
+			System.out.println(simpleList.getEntry(5).hashCode());
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,10 +58,8 @@ public class HashTableTest {
 				} else {
 					simpleList.getEntry(indexForWord).incrementCount();
 				}
-
 			}
 			fReader.close();
-
 		}
 	}
 
