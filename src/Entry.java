@@ -65,14 +65,12 @@ public class Entry {
 		double code = 0;
 
 		for (int i = 0; i < this.word.length(); i++) {
-			code = word.charAt(i) * Math.pow(31, this.word.length() - (i + 1));
+			code += word.charAt(i) * Math.pow(31, (this.word.length() - (i + 1)));
 		}
 
 		long bits = Double.doubleToLongBits(code);
-		int hashCode = (int) (bits ^ (bits >> 31));
+		int hashCode = (int) (bits ^ (bits >> 32));
 
-		
-		
 		return Math.abs(hashCode);
 	}
 }
