@@ -32,9 +32,9 @@ public class HashTable {
 		if (this.entries[key] == null) {
 			this.entries[key] = e;
 			this.size++;
-		} else if (this.entries[key].getWord().compareTo(e.getWord()) == 0 && this.entries[key] != null) {
+		} else if (this.entries[key].getWord().compareTo(e.getWord()) == 0) {
 			this.entries[key].incrementCount();
-		} else  if (this.entries[key] != null && this.entries[key].getWord().compareTo(e.getWord()) != 0){
+		} else if (this.entries[key].getWord().compareTo(e.getWord()) != 0) {
 			collisionManager(e, key);
 		}
 	}
@@ -45,37 +45,37 @@ public class HashTable {
 	}
 
 	private void collisionManager(Entry e, int key) {
-		boolean inserted = false;
+
 		int multiple = 0;
 		int newKey = 0;
 		int n = this.entries.length;
-		
-		
-		while (!inserted) {
-			newKey = ((key + (multiple * secondaryHash(key))) % n);
 
-			if (this.entries[newKey] == null) {
-				this.entries[newKey] = e;
-				inserted = true;
-				this.size++;
-			} else {
-				multiple++;
-			}
+		while (this.entries[newKey] != null && this.entries[newKey].getWord().compareTo(e.getWord()) != 0) {
+			newKey = (key + (multiple * secondaryHash(key))) % n;
+			multiple++;
 		}
+
+		if (this.entries[newKey] == null) {
+			this.entries[newKey] = e;
+			this.size++;
+		} else if (this.entries[newKey].getWord().compareTo(e.getWord()) == 0) {
+			this.entries[newKey].incrementCount();
+		}
+
 	}
 
 	private int secondaryHash(int key) {
-		return (7 - (key) % 7);
+		return 7 - ((key) % 7);
 	}
 
 	private void reHash() {
 		Entry[] listCopy = new Entry[this.entries.length];
-		Entry[] newSize = new Entry[this.entries.length * 2];
 
 		listCopy = this.entries;
 
-		this.entries = newSize;
+		this.entries = new Entry[this.entries.length * 3];
 		this.size = 0;
+
 		for (int j = 0; j < listCopy.length; j++) {
 			if (listCopy[j] != null) {
 				add(listCopy[j]);
@@ -90,7 +90,7 @@ public class HashTable {
 	public double size() {
 		return this.size;
 	}
-	
+
 	public String toString() {
 		String result = "";
 
