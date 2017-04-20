@@ -65,7 +65,7 @@ public class SimpleList {
      * @return  The {@code Entry} at the given index.
      */
     public Entry getEntry(int index) {
-        return this.entries[index];
+		return this.entries[index];
     }
 
     /**

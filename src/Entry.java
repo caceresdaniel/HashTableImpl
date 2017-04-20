@@ -60,6 +60,13 @@ public class Entry {
 		return result;
 	}
 
+	/**
+	 * Is called with a string this string is then converted to hashCode first
+	 * begins by multiplying each letter in the string by 31 to the power of i +
+	 * 1, it is then converted to long from double and it is then folded and
+	 * converted to int the absolute value is then taken in case of negative
+	 * numbers
+	 */
 	@Override
 	public int hashCode() {
 		double code = 0;
