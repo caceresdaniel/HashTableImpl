@@ -1,7 +1,8 @@
+import java.io.IOException;
 
 public class Driver {
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		HashTableTest ht = new HashTableTest();
-		ht.generateSimpleList();
+		ht.start();
 	}
 }

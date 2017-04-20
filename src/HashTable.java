@@ -4,8 +4,8 @@ public class HashTable {
 	private Entry[] entries;
 	private static final double LOAD_THRESHOLD = 0.5;
 	private static final int INITIAL_CAPACITY = 17;
-	private int size;
-	private double loadFactor = size / this.entries.length;
+	private double size;
+	private double loadFactor;
 
 	public HashTable() {
 		this.entries = new Entry[INITIAL_CAPACITY];
@@ -20,39 +20,62 @@ public class HashTable {
 	 * 
 	 */
 	public void add(Entry e) {
+
+		computeLoadFactor();
 		if (this.loadFactor >= LOAD_THRESHOLD) {
 			this.reHash();
 		}
 
-		int key = e.hashCode() % this.entries.length;
+		int n = this.entries.length;
+		int key = e.hashCode() % n; // hash compression
 
 		if (this.entries[key] == null) {
 			this.entries[key] = e;
 			this.size++;
-		} else if (this.entries[key] == e) {
+		} else if (this.entries[key].getWord().compareTo(e.getWord()) == 0 && this.entries[key] != null) {
 			this.entries[key].incrementCount();
-		} else if (this.entries[key] != e && this.entries[key] != null) {
-
+		} else  if (this.entries[key] != null && this.entries[key].getWord().compareTo(e.getWord()) != 0){
+			collisionManager(e, key);
 		}
 	}
 
-	private int secondaryHash(int key){
+	private void computeLoadFactor() {
+		double n = this.entries.length;
+		this.loadFactor = this.size / n;
+	}
+
+	private void collisionManager(Entry e, int key) {
+		boolean inserted = false;
+		int multiple = 0;
+		int newKey = 0;
+		int n = this.entries.length;
+		
+		
+		while (!inserted) {
+			newKey = ((key + (multiple * secondaryHash(key))) % n);
+
+			if (this.entries[newKey] == null) {
+				this.entries[newKey] = e;
+				inserted = true;
+				this.size++;
+			} else {
+				multiple++;
+			}
+		}
+	}
+
+	private int secondaryHash(int key) {
 		return (7 - (key) % 7);
 	}
-	
+
 	private void reHash() {
 		Entry[] listCopy = new Entry[this.entries.length];
 		Entry[] newSize = new Entry[this.entries.length * 2];
 
-		// for(int i = 0; i < entries.length; i++){
-		// listCopy[i] = this.entries[i];
-		// this.entries[i] = null;
-		// }
-
 		listCopy = this.entries;
 
 		this.entries = newSize;
-
+		this.size = 0;
 		for (int j = 0; j < listCopy.length; j++) {
 			if (listCopy[j] != null) {
 				add(listCopy[j]);
@@ -60,16 +83,26 @@ public class HashTable {
 		}
 	}
 
-	public int getEntry() {
-		return 0;
+	public Entry getEntry(int index) {
+		return this.entries[index];
 	}
 
-	private void collisionManager() {
-		/**
-		 * this is where you do double hashing and such you also do what you did
-		 * in add method once again
-		 * 
-		 */
+	public double size() {
+		return this.size;
 	}
+	
+	public String toString() {
+		String result = "";
 
+		String formatter = "%-20s%-1d";
+
+		for (int i = 0; i < this.size; i++) {
+			Entry e = this.entries[i];
+			if (this.entries[i] != null) {
+				result += String.format(formatter, e.getWord(), e.getCount()) + "\n";
+			}
+		}
+
+		return result;
+	}
 }
